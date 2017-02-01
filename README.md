@@ -1,4 +1,4 @@
-#####Torsional Wave Visualisation Program (1.0) by Sam Greenwood (1/02/17)
+#####Matlab Torsional Wave Visualisation Program (1.0) by Sam Greenwood (1/02/17)
 
 This program offers 3 ways to visualise torsional wave propogation in the 
 earths core as animations. The main program (main.m) relies upon the 5
