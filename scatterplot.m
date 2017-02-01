@@ -129,6 +129,7 @@ for t = 1:nframes
     j=1;
     count = 1;
     % Sequentially plot data grouped by it's colour.
+    plots = struct([]);
     for i = 1:size(colourscheme,1)
         while data(j,4)==i
             j = j+1;
