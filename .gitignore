@@ -1,2 +1,5 @@
 #Ignore Grace's data
 Grace*
+time.mat
+radius.mat
+tw_sphere.mat
