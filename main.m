@@ -154,7 +154,7 @@ if mov_out ~= 0
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-    text = sprintf('If the movie has encoded correctly, would you like to delete the indivual .png frames? (y/n) \n CAUTION: ALL .PNG FILES IN THE DIRECTORY ./OUTPUT WILL BE DELETED! \n');
+    text = sprintf('If the movie has encoded correctly, would you like to delete the indivual .png frames? (y/n) \n CAUTION: ALL .PNG FILES IN THE DIRECTORY ./OUTPUT_TORSIONAL WILL BE DELETED! \n');
     choice = input(text,'s');
     if choice == 'y'
         unix('rm ./output_torsional/*.png');
@@ -166,5 +166,5 @@ if mov_out ~= 0
 else
 end
 
-
+disp('FINISHED')
 
