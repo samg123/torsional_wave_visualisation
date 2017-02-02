@@ -1,35 +1,14 @@
 % Torsional Wave Visualisation Program 1.0 by Sam Greenwood (27/9/16)
 %
-% This program offers 3 ways to visualise torsional wave propogation in the
-% earths core as movies. 4 external functions are provided with this program:
-% 3 for the different visualisations and one for drawing cylinders. Of the
-% visualisations, the first 2 show a 2D equatorial slice and the 3rd
-% shows a full 3D representation of the core. 'scatterplot.m' generates a
-% random set of data points across the equatorial slice then advects them
-% acording to the velocity at that radius. 'cylinders_2D.m' and
-% 'cylinders_3D.m' approximate the core to a user defined number of
-% rotating concentic cylinders. All three types of animation output a series 
-% of sequentially numbered png images saved into a folder named 'output'.
-% This program is also sent up to encode them into a movie by using ffmpeg
-% on a unix system. If ffmpeg is not installed or the system is not based
-% on unix commands then the Movie Encoding section of this code is not
-% needed. It is left to the user to decide how they would like the frames
-% encoded into a movie.
-% If you would like to be notified of any further updates to this code or
-% have any questions, feel free to contact me at ee12sg@leeds.ac.uk
-
-
-% Data formats:
-% Velocity data needs to be a matrix of mxn (rowsxcolumns) where m=number
-% of radial points and n=number of time steps, hence giving the velocity
-% for every radius at each time step.
-
-% Time data needs to be an array of length 1xn  with the value of time at each time
-% step. This will be used to calculate the advection for all time as well as be displayed
-% in the title of the plot. 
-
-% Both velocity data and time data files must only contain the columns and
-% rows (delimeted) of numbers. No headers or footers are assumed.
+% This is the main program from which everything is controlled. The other
+% included functions shoulnd't need editting. Edit the User Defined
+% Variables (below) as appropriate. Once these have been editted, run the
+% program and answer the questions in the command window in the main Matlab
+% window. The program will then generate the individual frames for the
+% animation and save them to './output_torsional'. The external functions
+% should be in the same directory as this program.
+% See my github for the latest version of this code:
+% https://github.com/samg123/torsional_wave_visualisation
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % User Defined Variables
@@ -51,8 +30,8 @@
     user.nframes=100;
 %intro animation for 3D animation. (on=1, off=0)
     intro_anim=1;
-%number of texture points
-    user.n_tex = 3000;
+%number of texture points (recommended 300 for 2D/3D plots and 3000 for scatter plot)
+    user.n_tex = 300;
 %Text for x axis label
     user.x_axis=sprintf('Radius/ km');
 %Text for y axis label
