@@ -48,8 +48,8 @@ this command can be turned off by the user with the mov_out variable.
 #####Examples
 
 Included in this repository is an example data set (example_vel.txt and
-example_time.txt) and an example movie of each style of animation for this data.
-The data is a simple gaussian wave travelling outwards.
+example_time.txt) and an example movie of each style of animation for this data (in the
+output_torsional folder). The data is a simple gaussian wave travelling outwards.
 
 If you have any questions or find any bugs feel free to contact me at
 ee12sg@leeds.ac.uk
