@@ -89,7 +89,7 @@ ylabel(y_axis,'FontSize',fs)
 colormap(colourscheme)
 c=colorbar;
 caxis(cbar_range)
-title(c,ct)
+title(c,ct,'Position',[8 33 2.00005])
 
 % Start the loop
 
@@ -130,10 +130,12 @@ for t = 1:nframes
     count = 1;
     % Sequentially plot data grouped by it's colour.
     plots = struct([]);
+    flag = 0;
     for i = 1:size(colourscheme,1)
         while data(j,4)==i
             j = j+1;
             if j == size(data,1)
+                flag=1;
                 break
             end
         end
@@ -144,6 +146,9 @@ for t = 1:nframes
             hold on
             temp = j;
         else
+        end
+        if flag == 1
+            break
         end
     end
     

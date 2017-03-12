@@ -77,7 +77,11 @@ plot(cmbx,cmby,'k-','LineWidth',1)
 colormap(colourscheme)
 c=colorbar;
 caxis(cbar_range)
-title(c,ct)
+c_t = title(c,ct);
+new_pos = get(c_t,'Position');
+disp(new_pos)
+new_pos(2) = new_pos(2);
+set(c_t,'Position',new_pos)
 set(gca,'XTick',ticks,'XTickLabel',lables)
 xlabel(x_axis,'FontSize',fs)
 set(gca,'YTick',ticks,'YTickLabel',lables)

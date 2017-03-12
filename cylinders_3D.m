@@ -76,7 +76,7 @@ colormap(colourscheme)
 cb=colorbar;
 set(cb,'position',[0.9, 0.4, 0.03, 0.3])
 caxis(cbar_range)
-title(cb,ct)
+title(cb,ct,'Position',[8 33 2.00005])
 grid on
 view(az-(20*intro_anim),el-(20*intro_anim))
 
