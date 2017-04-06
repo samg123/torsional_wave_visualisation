@@ -1,4 +1,4 @@
-function scatterplot(np,time,V,user,colourscheme)
+function scatterplot(np,time,V,user)
 
 % Creates a random texture on a 2D equatorial slice in the form of data
 % points and advects them as decribed by the matrix 'vel'. 
@@ -12,6 +12,7 @@ function scatterplot(np,time,V,user,colourscheme)
 %Load user defined variables
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 n_tex = user.n_tex;
+tex_size = user.tex_size;
 x_axis = user.x_axis;
 y_axis = user.y_axis;
 fs = user.fs;
@@ -23,7 +24,7 @@ ticks = user.ticks;
 lables = user.lables;
 tmpl = user.tmpl;
 nframes = user.nframes;
-
+colourscheme = user.cs;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
@@ -75,7 +76,7 @@ fraction = round(half.*V./max(abs(V(:))));
 half = ceil(size(colourscheme,1)/2);
 
 %Set up figure
-h=figure('Visible','off'); 
+h=figure('Visible','off','Position', [100, 100, 1000, 900]); 
 
 plot(cmbx,cmby,'k-')
 hold on
@@ -89,15 +90,13 @@ ylabel(y_axis,'FontSize',fs)
 colormap(colourscheme)
 c=colorbar;
 caxis(cbar_range)
-title(c,ct,'Position',[8 33 2.00005])
-
-% Start the loop
-
-bar = waitbar(0,'');
+title(c,ct)
 
 tt = linspace(time(1),max(time),nframes);
 step = (max(time)-time(1))/nframes;
 
+bar = waitbar(0,'');
+% Start the loop
 for t = 1:nframes
    %Advect the texture
    for i = 1:size(data,1)
@@ -141,7 +140,7 @@ for t = 1:nframes
         end
         if j > temp
             colour = colourscheme(i,:);
-            plots{count} = plot(Xs(temp:(j-1)),Ys(temp:(j-1)),'LineStyle','none','Marker','.','Color',colour);
+            plots{count} = plot(Xs(temp:(j-1)),Ys(temp:(j-1)),'LineStyle','none','Marker','.','Color',colour,'MarkerSize',tex_size);
             count = count+1;
             hold on
             temp = j;
@@ -154,7 +153,7 @@ for t = 1:nframes
     
     %plot the last colour (previous loop doesn't cover it)
     colour = colourscheme(data(size(data,1),4),:);
-    plots{count} = plot(Xs(temp:size(data,1)),Ys(temp:size(data,1)),'LineStyle','none','Marker','.','Color',colour);
+    plots{count} = plot(Xs(temp:size(data,1)),Ys(temp:size(data,1)),'LineStyle','none','Marker','.','Color',colour,'MarkerSize',tex_size);
     hold on
    
     

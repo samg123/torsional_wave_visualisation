@@ -1,4 +1,4 @@
-function cylinders_2D(n,time,V,user,colourscheme)
+function cylinders_2D(n,time,V,user)
 
 % Approximates the core to a set number of cylinders and produces a 2D
 % animation of an equatorial slice. The cylinders are plotted and change
@@ -21,6 +21,7 @@ function cylinders_2D(n,time,V,user,colourscheme)
 %Load user defined variables
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 n_tex = user.n_tex;
+tex_size = user.tex_size;
 x_axis = user.x_axis;
 y_axis = user.y_axis;
 fs = user.fs;
@@ -32,6 +33,7 @@ ticks = user.ticks;
 lables = user.lables;
 tmpl = user.tmpl;
 nframes = user.nframes;
+colourscheme = user.cs;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 tmpl = ['./output_torsional/',tmpl,'_%04d'];
@@ -67,7 +69,7 @@ for i = 1:length(x)
 end
 
  %Set up figure
-h=figure('Visible','off');
+h=figure('Visible','off','Position', [100, 100, 1000, 900]);
 
 %Plot the ICB and CMB circles
 plot(cx,cy,'k-','LineWidth',1)
@@ -77,11 +79,7 @@ plot(cmbx,cmby,'k-','LineWidth',1)
 colormap(colourscheme)
 c=colorbar;
 caxis(cbar_range)
-c_t = title(c,ct);
-new_pos = get(c_t,'Position');
-disp(new_pos)
-new_pos(2) = new_pos(2);
-set(c_t,'Position',new_pos)
+title(c,ct);
 set(gca,'XTick',ticks,'XTickLabel',lables)
 xlabel(x_axis,'FontSize',fs)
 set(gca,'YTick',ticks,'YTickLabel',lables)
@@ -104,12 +102,11 @@ for i = 1:n
    hold on
 end
 
-bar = waitbar(0,'');
 
 tt = linspace(time(1),max(time),nframes);
 step = (max(time)-time(1))/nframes;
 
-
+bar = waitbar(0,'');
 % Start the loop
 for t = 1:nframes
 
@@ -134,9 +131,9 @@ for t = 1:nframes
     [X,Y] = pol2cart(data(:,1),data(:,2));
 
     if n > 39
-       sc = plot(X,Y,'k.','MarkerSize',1);
+       sc = plot(X,Y,'k.','MarkerSize',tex_size);
     else
-       sc = plot(X,Y,'k.','MarkerSize',(40-n));
+       sc = plot(X,Y,'k.','MarkerSize',tex_size);
     end
 
 

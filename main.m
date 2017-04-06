@@ -16,46 +16,69 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % File containing velocity data. Data is assumed to have units radians per unit time.
     Vfile = 'example_vel.txt';
+    
 %Load the data
     vel=dlmread(Vfile);
+    
  %Set the time array, enter the start and end values for the simulation
  %time.Time units are assumed to be the same used in the velocity.
     t_start = 0;
     t_end = 20;
     time = linspace(t_start,t_end,size(vel,2));
- %Type of plot to generate. 1 = scatter plot, 2 = 2D cylinders, 3 = 3Dcylinders
-    plot_type = 2;
- %Number of cylinders to approximate to (irrelevant for scatter plots)
+    
+%Type of plot to generate. 1 = scatter plot, 2 = 2D cylinders, 3 = 3Dcylinders
+    plot_type = 3;
+    
+%Number of cylinders to approximate to (irrelevant for scatter plots)
     n = 10;
+    
 %Output movie file format, can set to any format available to ffmpeg
 %(Requires ffmpeg cl tools. Set mov_fmt = 0 to skip encoding movie)
     mov_fmt = '.mp4';
+    
 %Number of frames in the movie
-    user.nframes=100;
- %Movie framerate
-    mov_fps = 24;
+    user.nframes=200;
+    
+%Movie framerate (must be smaller than number of frames).
+    mov_fps = round(user.nframes/10);
+    
 %intro animation for 3D animation. (on=1, off=0)
-    intro_anim=1;
+    intro_anim=0;
+    
 %number of texture points (recommended 300 for 2D/3D plots and 3000 for scatter plot)
     user.n_tex = 300;
+    
+%Texture point marker size (recommended 10 for scatterplot and 20 for 2D/3D plots
+    user.tex_size = 20;
+    
 %Text for x axis label
-    user.x_axis=sprintf('Radius/ km');
+    user.x_axis=sprintf('Radius');
+    
 %Text for y axis label
-    user.y_axis=sprintf('Radius/ km');
+    user.y_axis=sprintf('Radius');
+    
 %font size for x/y axis
     user.fs = 10;
+    
 %font size for title
     user.tfs = 15;
+    
 %Data range for the colorbar to represent
     user.cbar_range = [-max(abs(vel(:))), max(abs(vel(:)))];
+    
 %Colorbar title
     user.ct = ['Velocity'];
+    
 %Unit of time values in 'time' array. This will be printed in the title e.g 1.45 Years
     user.titletext = [' Years'];
- % Tick marks for x/y axis (must be >-1 and <1 inclusively)
+    
+    
+%Positions of Tick marks for x/y axis (must be >-1 and <1 inclusively)
     user.ticks = [-1,-0.3509,0,0.3509,1];
+    
 %Labels for these tick marks
-    user.lables = {'3480','TC','0','TC','3480'};
+    user.lables = {'CMB','TC','0','TC','CMB'};
+    
 %az and el are the starting azimuth/elevation for the 3D view.
     user.az = -110;
     user.el = 20;
@@ -74,7 +97,7 @@
 %     C = 1-(i/30);
 %     cs(31+i,:) = [1,C,C];
 % end
-cs = jet;
+user.cs = jet;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %Check with user directory output is ok to use
@@ -95,27 +118,34 @@ end
 set(gcf,'Renderer','OpenGL');
 close(1)
 
-if ceil(user.n_tex/10) > size(vel,1)
-    np = size(vel,1);
-else
-    np = ceil(user.n_tex/10);
-end
 
-%Determine plot type and run it
+%Calculate number of iterations code must run and set up waitbar
+if plot_type == 3
+    user.ncalcs = 2*user.nframes + n + 124*intro_anim;
+else
+    user.ncalcs = 2*user.nframes + n;
+end
+user.bar = waitbar(0,'');
+
+%Determine plot type, average velocities and run it.
 if plot_type > 1
-    V = displacements(vel,n,time,user.nframes);
+    V = avg_velocities(vel,n,user.nframes);
+    
     if plot_type == 2
         user.tmpl = '2D';
-        cylinders_2D(n,time,V,user,cs)
+        cylinders_2D(n,time,V,user)
     elseif plot_type == 3
         user.tmpl = '3D';
-        cylinders_3D(n,time,V,user,cs,intro_anim)
+        cylinders_3D(n,time,V,user,intro_anim)
     else
     end
+    
 elseif plot_type ==1
-    V = displacements(vel,np,time,user.nframes);
+    V = avg_velocities(vel,100,user.nframes);
+    
     user.tmpl = 'scatter';
-    scatterplot(np,time,V,user,cs)
+    scatterplot(100,time,V,user)
+    
 elseif plot_type ~=1 && plot_type ~=2 && plot_type ~=3
     error('!!plot_type must be 1,2 or 3!!')
 end

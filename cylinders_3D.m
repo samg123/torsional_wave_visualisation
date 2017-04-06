@@ -1,4 +1,4 @@
-function cylinders_3D(n,time,V,user,colourscheme,intro_anim)
+function cylinders_3D(n,time,V,user,intro_anim)
 % INPUT
 % n = number of cylinders
 % time = array time data
@@ -17,6 +17,7 @@ function cylinders_3D(n,time,V,user,colourscheme,intro_anim)
 %Load user defined variables
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 n_tex = user.n_tex;
+tex_size = user.tex_size;
 x_axis = user.x_axis;
 y_axis = user.y_axis;
 fs = user.fs;
@@ -30,6 +31,7 @@ tmpl = user.tmpl;
 nframes = user.nframes;
 az = user.az;
 el = user.el;
+colourscheme = user.cs;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 name_counter = 1;
@@ -71,12 +73,12 @@ half = floor(size(colourscheme,1)/2);
 fraction = round(half.*V./max(abs(V(:))));
 
 %Set up figure
-h=figure('Visible','off');
+h=figure('Visible','off','Position', [100, 100, 1000, 900]);
 colormap(colourscheme)
 cb=colorbar;
 set(cb,'position',[0.9, 0.4, 0.03, 0.3])
 caxis(cbar_range)
-title(cb,ct,'Position',[8 33 2.00005])
+title(cb,ct)
 grid on
 view(az-(20*intro_anim),el-(20*intro_anim))
 
@@ -115,10 +117,11 @@ for i = 1:n
 end
 
 
-bar = waitbar(0,'');
+
 tt = linspace(time(1),max(time),nframes);
 step = (max(time)-time(1))/nframes;
 
+bar = waitbar(0,'');
 %Start looping through time.
 for t = 1:nframes
     
@@ -149,13 +152,13 @@ for t = 1:nframes
 
     %Plot the texture data
     [X1,Y1,Z1] = pol2cart(data(:,1),data(:,2)+0.55/n,data(:,3));
-    sc1 = scatter3(X1,Y1,Z1,4,'k','filled');
+    sc1 = scatter3(X1,Y1,Z1,tex_size,'k','filled');
     hold on
     [X2,Y2,Z2] = pol2cart(data(:,1),data(:,2),data(:,4));
-    sc2 = scatter3(X2,Y2,Z2,4,'k','filled');
+    sc2 = scatter3(X2,Y2,Z2,tex_size,'k','filled');
     hold on
     [X3,Y3,Z3] = pol2cart(data(:,1),data(:,2),-data(:,4));
-    sc3 = scatter3(X3,Y3,Z3,4,'k','filled');
+    sc3 = scatter3(X3,Y3,Z3,tex_size,'k','filled');
 
 
     %Create intro animation
@@ -176,8 +179,8 @@ for t = 1:nframes
             %Create 24 static images at beginning
             for i = 1:24
                 fnam=sprintf(tmpl,name_counter);
-                text=['Saving frame ', num2str(name_counter),' to: ./output\_torsional/'];
-                waitbar(i/(nframes+(intro_anim*124)),bar,text)
+                text=['Saving intro animation frame ', num2str(name_counter),' to: ./output\_torsional/'];
+                waitbar(i/124,bar,text)
                 print(fnam,'-dpng')
                 name_counter = name_counter + 1;
             end
@@ -195,8 +198,8 @@ for t = 1:nframes
                 set(p2,'FaceColor',[0.9 0.9 0.9],'FaceAlpha',1,'LineStyle','none');
                 set(p2,'FaceAlpha',(1-i/100));
                 set(tc{1},'FaceAlpha',(0.4/95)*i);
-                text=['Saving frame ', num2str(name_counter),' to: ./output\_torsional/'];
-                waitbar((24+i)/(nframes+(intro_anim*124)),bar,text)
+                text=['Saving intro animation frame ', num2str(name_counter),' to: ./output\_torsional/'];
+                waitbar((24+i)/124,bar,text)
                 fnam=sprintf(tmpl,name_counter);
                 print(fnam,'-dpng')
                 name_counter = name_counter + 1;
@@ -217,7 +220,7 @@ for t = 1:nframes
      title(text,'FontSize',tfs)
 
      text=['Saving frame ', num2str(name_counter),' to: ./output\_torsional/'];
-     waitbar((t+(intro_anim*124))/(nframes+(intro_anim*124)),bar,text)
+     waitbar(t/nframes,bar,text)
 
      
      fnam=sprintf(tmpl,name_counter);
