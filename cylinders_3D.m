@@ -68,7 +68,8 @@ for i = 1:length(x)
     end 
 end
 
-%set the index for the colourscale.
+%For each velocity point define the index of the colour in the matrix
+%colourscheme
 half = floor(size(colourscheme,1)/2);
 fraction = round(half.*V./max(abs(V(:))));
 
@@ -98,8 +99,7 @@ axis square
 camlight;
 grid on
 
-% Draw cylinders with external
-% function make_cylinder.m
+% Draw the cylinders.
 colour = [1,1,1];
 half = ceil(size(colourscheme,1)/2);
 for i = 1:n
@@ -124,11 +124,11 @@ step = (max(time)-time(1))/nframes;
 bar = waitbar(0,'');
 %Start looping through time.
 for t = 1:nframes
-    
-    % Advect the texture and set colour of cylinders
+
     for i = 1:size(data,1)
 
          for j = 1:n
+            %Set the colour of the cylinder
             flag = 0;
             colour = colourscheme(half+fraction(j,t),:);
             
@@ -138,6 +138,7 @@ for t = 1:nframes
                 set(temp,'facecolor',colour)
             end
             
+            %Avect the texture
             rad = j/n - 0.5/n;
             if data(i,2) == rad
                data(i,1) = data(i,1) + V(j,t)*step;
@@ -214,21 +215,26 @@ for t = 1:nframes
     end
 
 
-    % Once intro is over, continue as normal
+    %Once intro is over, continue as normal
 
+     %Set title of plot
      text = [num2str(tt(t)),titletext];
      title(text,'FontSize',tfs)
 
+     %Update the waitbar
      text=['Saving frame ', num2str(name_counter),' to: ./output\_torsional/'];
      waitbar(t/nframes,bar,text)
 
-     
+     %Save the image file
      fnam=sprintf(tmpl,name_counter);
      print(fnam,'-dpng')
-     name_counter = name_counter + 1;
+     
+     %Delete the texture for replotting in the next iteration
      delete(sc1)
      delete(sc2)
      delete(sc3)
+     
+     name_counter = name_counter + 1;
 end
 close(bar)
 close(h)

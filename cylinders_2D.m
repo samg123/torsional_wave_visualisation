@@ -54,6 +54,8 @@ for i =0:150
 end
 [cmbx,cmby] = pol2cart(cmb(:,1),cmb(:,2));
 
+
+%Set up the texture points
 x = [1:n];
 f = sum(x.^1)/n_tex;
 x = ceil(x.^1/f);
@@ -68,7 +70,7 @@ for i = 1:length(x)
     end 
 end
 
- %Set up figure
+%Set up figure
 h=figure('Visible','off','Position', [100, 100, 1000, 900]);
 
 %Plot the ICB and CMB circles
@@ -87,12 +89,13 @@ ylabel(y_axis,'FontSize',fs)
 axis square
 
 
-
+%For each velocity point define the index of the colour in the matrix
+%colourscheme
 half = floor(size(colourscheme,1)/2);
 fraction = round(half.*V./max(abs(V(:))));
 
+%Draw the cylinders
 theta=linspace(0,2*pi);
-
 half = ceil(size(colourscheme,1)/2);
 for i = 1:n    
    rin = (i-1)/n;
@@ -112,6 +115,7 @@ for t = 1:nframes
 
     for i = 1:size(data,1)          
         
+        %Set the colour of the cylinders by velocity
         if i == 1
             for j = 1:n
                 colour = colourscheme(half+fraction(j,t),:);
@@ -119,6 +123,7 @@ for t = 1:nframes
             end
         end
         
+        %Advect the texture
         for j = 1:n
             rad = j/n - 0.5/n;
             if data(i,2) == rad       
@@ -127,17 +132,11 @@ for t = 1:nframes
         end
     end
   
-
+    %Plot the texture
     [X,Y] = pol2cart(data(:,1),data(:,2));
+    sc = plot(X,Y,'k.','MarkerSize',tex_size);
 
-    if n > 39
-       sc = plot(X,Y,'k.','MarkerSize',tex_size);
-    else
-       sc = plot(X,Y,'k.','MarkerSize',tex_size);
-    end
-
-
-    
+    %Set the title of the plot
     text = [num2str(tt(t)),titletext];
     title(text,'FontSize',tfs)
 
@@ -145,6 +144,7 @@ for t = 1:nframes
     fnam=sprintf(tmpl,name_counter);
     print(fnam,'-dpng')
 
+    %Update waitbar
     text=['Saving frame ', num2str(name_counter),' to: ./output\_torsional/'];
     waitbar(t/nframes,bar,text)
 

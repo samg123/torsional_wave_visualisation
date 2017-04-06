@@ -27,7 +27,7 @@ nframes = user.nframes;
 colourscheme = user.cs;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-
+%Set the file naming template.
 tmpl = ['./output_torsional/',tmpl,'_%04d'];
 name_counter=1;
 
@@ -70,7 +70,8 @@ for i = 1:np
     end   
 end
 
-%set the index for the colourscale.
+%For each velocity point define the index of the colour in the matrix
+%colourscheme
 half = floor(size(colourscheme,1)/2);
 fraction = round(half.*V./max(abs(V(:))));
 half = ceil(size(colourscheme,1)/2);
@@ -105,7 +106,7 @@ for t = 1:nframes
            flag=0;
            
         if data(i,2) == j
-            
+           %Advect the texture and assign it a colour.
            data(i,3) = V(j,t)/step;
            data(i,4) = half+fraction(j,t); 
            data(i,1) = data(i,1) + V(j,t)*step;
@@ -124,10 +125,10 @@ for t = 1:nframes
     data=sortrows(data,4);
     [Xs,Ys] = pol2cart(data(:,1),data(:,2));
        
+    %Sequentially plot data grouped by it's colour.
     temp = 1;
     j=1;
     count = 1;
-    % Sequentially plot data grouped by it's colour.
     plots = struct([]);
     flag = 0;
     for i = 1:size(colourscheme,1)
@@ -157,22 +158,26 @@ for t = 1:nframes
     hold on
    
     
-    %Add title
+    %Set the title of the plot
     text = [num2str(tt(t)),titletext];
     title(text,'FontSize',tfs)
 
      
-    %Save the image filee
+    %Save the image file
     fnam=sprintf(tmpl,name_counter); 
     print(fnam,'-dpng')
+    
+    %Update the waitbar
     text=['Saving frame ', num2str(name_counter),' to: ./output\_torsional/'];
     waitbar(t/nframes,bar,text)
-    name_counter = name_counter + 1;
-   
+    
+    
+    %Clear texture for replotting in next iteration
     for i = 1:length(plots)
         delete(plots{i})
     end
          
+    name_counter = name_counter + 1;
 end
 close(h)
 close(bar)
