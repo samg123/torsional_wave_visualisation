@@ -1,4 +1,4 @@
-function V = avg_velocities_test(vel,n,nframes)
+function V = avg_velocities(vel,n,nframes)
 %Averages velocities given in vel into a matrix V that is nxnframes large.
 
 %The average velocity over the width of the cylinder or over a given time
@@ -87,4 +87,4 @@ for i = loop2
         start_int = end_int;
     end
 end
-close(bar)
+delete(bar)

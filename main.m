@@ -21,34 +21,37 @@
     vel=dlmread(Vfile);
     
  %Set the time array, enter the start and end values for the simulation
- %time.Time units are assumed to be the same used in the velocity.
+ %time. Time units are assumed to be the same used in the velocity.
     t_start = 0;
     t_end = 20;
     time = linspace(t_start,t_end,size(vel,2));
     
 %Type of plot to generate. 1 = scatter plot, 2 = 2D cylinders, 3 = 3Dcylinders
-    plot_type = 3;
+    plot_type = 2;
     
-%Number of cylinders to approximate to (irrelevant for scatter plots)
-    n = 10;
+%Number of cylinders to approximate to (taken to be 100 for scatter plot)
+    n = 15;
     
-%Output movie file format, can set to any format available to ffmpeg
-%(Requires ffmpeg cl tools. Set mov_fmt = 0 to skip encoding movie)
+%Output movie file format, can set to any format available to ffmpeg.
+%Requires ffmpeg cl tools. Set mov_fmt = 0 to skip encoding movie. May
+%need to tell Matlab the location of ffmpeg if it doesn't recognise it
+%(ffmpeg_loc variable below).
     mov_fmt = '.mp4';
+    %ffmpeg_loc = '/usr/bin/';
     
 %Number of frames in the movie
-    user.nframes=200;
+    user.nframes=100;
     
 %Movie framerate (must be smaller than number of frames).
-    mov_fps = round(user.nframes/10);
+    mov_fps = 24;
     
 %intro animation for 3D animation. (on=1, off=0)
     intro_anim=0;
     
-%number of texture points (recommended 300 for 2D/3D plots and 3000 for scatter plot)
+%number of texture points (recommended 300 for 2D/3D plots and 5000 for scatter plot)
     user.n_tex = 300;
     
-%Texture point marker size (recommended 10 for scatterplot and 20 for 2D/3D plots
+%Texture point marker size
     user.tex_size = 20;
     
 %Text for x axis label
@@ -63,16 +66,15 @@
 %font size for title
     user.tfs = 15;
     
-%Data range for the colorbar to represent
-    user.cbar_range = [-max(abs(vel(:))), max(abs(vel(:)))];
+%Range of values for color scale to represent (will run from -cbar_range to cbar_range)
+    user.cbar_range = 1;  %max(abs(vel(:)));
     
 %Colorbar title
     user.ct = ['Velocity'];
     
 %Unit of time values in 'time' array. This will be printed in the title e.g 1.45 Years
     user.titletext = [' Years'];
-    
-    
+        
 %Positions of Tick marks for x/y axis (must be >-1 and <1 inclusively)
     user.ticks = [-1,-0.3509,0,0.3509,1];
     
@@ -158,7 +160,13 @@ end
 % Call Matlab to run the ffmpeg unix command. The framerate can be changed
 % by placing a different number after '-framerate'. 
 if mov_fmt ~= 0
-    command = ['ffmpeg -framerate ',num2str(mov_fps),' -i ./output_torsional/',user.tmpl,'_%04d.png ./output_torsional/',user.tmpl,mov_fmt];
+    if exist('ffmpeg_loc','var') == 1
+        loc = ffmpeg_loc;
+    else
+        loc = '';
+    end
+    
+    command = [loc,'ffmpeg -framerate ',num2str(mov_fps),' -i ./output_torsional/',user.tmpl,'_%04d.png ./output_torsional/',user.tmpl,mov_fmt];
     unix(command);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

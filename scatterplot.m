@@ -73,7 +73,17 @@ end
 %For each velocity point define the index of the colour in the matrix
 %colourscheme
 half = floor(size(colourscheme,1)/2);
-fraction = round(half.*V./max(abs(V(:))));
+fraction = round(half.*V./cbar_range);
+for i = 1:size(fraction,1)
+    for j = 1:size(fraction,2)
+        if fraction(i,j) > half
+            fraction(i,j) = half;
+        elseif fraction(i,j) < 1-half
+            fraction(i,j) = 1-half;
+        end
+    end
+end
+
 half = ceil(size(colourscheme,1)/2);
 
 %Set up figure
@@ -90,7 +100,7 @@ set(gca,'YTick',ticks*np,'YTickLabel',lables)
 ylabel(y_axis,'FontSize',fs)
 colormap(colourscheme)
 c=colorbar;
-caxis(cbar_range)
+caxis([-cbar_range,cbar_range])
 title(c,ct)
 
 tt = linspace(time(1),max(time),nframes);

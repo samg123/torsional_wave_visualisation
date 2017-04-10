@@ -71,14 +71,23 @@ end
 %For each velocity point define the index of the colour in the matrix
 %colourscheme
 half = floor(size(colourscheme,1)/2);
-fraction = round(half.*V./max(abs(V(:))));
+fraction = round(half.*V./cbar_range);
+for i = 1:size(fraction,1)
+    for j = 1:size(fraction,2)
+        if fraction(i,j) > half
+            fraction(i,j) = half;
+        elseif fraction(i,j) < 1-half
+            fraction(i,j) = 1-half;
+        end
+    end
+end
 
 %Set up figure
 h=figure('Visible','off','Position', [100, 100, 1000, 900]);
 colormap(colourscheme)
 cb=colorbar;
 set(cb,'position',[0.9, 0.4, 0.03, 0.3])
-caxis(cbar_range)
+caxis([-cbar_range, cbar_range])
 title(cb,ct)
 grid on
 view(az-(20*intro_anim),el-(20*intro_anim))

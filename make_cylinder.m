@@ -31,13 +31,13 @@ for i=1:n_sides
     
     % Side patches data
     patch_data_x(:,i) = vertex_data(index_patch(i,:),1);
-    PatchData1_y(:,i) = vertex_data(index_patch(i,:),2);
-    PatchData1_z(:,i) = vertex_data(index_patch(i,:),3) - h/2;
+    patch_data_y(:,i) = vertex_data(index_patch(i,:),2);
+    patch_data_z(:,i) = vertex_data(index_patch(i,:),3) - h/2;
 end
 
 % Draw side patches
 
-h{1}=patch(patch_data_x,PatchData1_y,PatchData1_z,colour,'LineStyle','none');
+h{1}=patch(patch_data_x,patch_data_y,patch_data_z,colour,'LineStyle','none');
 hold on
 
 if option == 1

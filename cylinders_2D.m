@@ -80,7 +80,7 @@ plot(cmbx,cmby,'k-','LineWidth',1)
 
 colormap(colourscheme)
 c=colorbar;
-caxis(cbar_range)
+caxis([-cbar_range, cbar_range])
 title(c,ct);
 set(gca,'XTick',ticks,'XTickLabel',lables)
 xlabel(x_axis,'FontSize',fs)
@@ -92,14 +92,23 @@ axis square
 %For each velocity point define the index of the colour in the matrix
 %colourscheme
 half = floor(size(colourscheme,1)/2);
-fraction = round(half.*V./max(abs(V(:))));
+fraction = round(half.*V./cbar_range);
+for i = 1:size(fraction,1)
+    for j = 1:size(fraction,2)
+        if fraction(i,j) > half
+            fraction(i,j) = half;
+        elseif fraction(i,j) < 1-half
+            fraction(i,j) = 1-half;
+        end
+    end
+end
 
 %Draw the cylinders
 theta=linspace(0,2*pi);
 half = ceil(size(colourscheme,1)/2);
 for i = 1:n    
    rin = (i-1)/n;
-   rout = i/n; 
+   rout = i/n;
    colour = colourscheme(half+fraction(i,1),:);
    draw{i} = patch([rout*cos(theta),rin*cos(theta)],[rout*sin(theta),rin*sin(theta)],colour,'linestyle','none');
    hold on
