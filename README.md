@@ -1,4 +1,4 @@
-#####Matlab Torsional Wave Visualisation Program (1.0) by Sam Greenwood (1/02/17)
+#####Matlab Torsional Wave Visualisation Program (1.2) by Sam Greenwood (11/04/17)
 
 This program offers 3 ways to visualise torsional wave propogation in the 
 earths core as animations. The main program (main.m) relies upon the 5
@@ -39,17 +39,25 @@ velocity (e.g. velocity and time data should be rad/year and years).
 #####Movie Encoding
 
 The indivual frames of the animation are saved to './output_torsional' where
-'./' denotes the directory in which matlab is running from. How the frames are
-encoded into a movie is left to the user. The recommended method is with ffmpeg.
-If the ffmpeg command line tools are installed then the encoding command is
-included within main.m and will run automatically. If they are not installed then
-this command can be turned off by the user with the mov_out variable.
+'./' denotes the directory in which matlab is running from. If the ffmpeg command line 
+tools are installed then the command to encode the frames into a movie is included within
+main.m and will run automatically (ffmpeg can be installed from https://ffmpeg.org/).
+If they are not installed then this command can be turned off by the user
+with the 'mov_out' variable and encoding them is left to the user.
+Depending on how Matlab is set up it may not recognise the
+ffmpeg command. In this case uncomment the 'ffmpeg_loc' variable in main.m and set it to
+the path to where ffmpeg is installed. 
 
 #####Examples
 
-Included in this repository is an example data set (example_vel.txt and
-example_time.txt) and an example movie of each style of animation for this data (in the
-output_torsional folder). The data is a simple gaussian wave travelling outwards.
+Included in this repository is an example data set (simple gaussian pulse) and a dataset
+presented in figure 3 of Cox et al (2014). A movie of each style of animation for the
+data is provided in the output_torsional folder.
 
-If you have any questions or find any bugs feel free to contact me at
+If you have any questions or find any bugs, feel free to contact me at
 ee12sg@leeds.ac.uk
+
+#####Reference
+
+G. A. Cox, P. W. Livermore, J. E. Mound; Forward models of torsional waves: dispersion 
+and geometric effects. Geophys J Int 2014; 196 (3): 1311-1329. doi: 10.1093/gji/ggt414
