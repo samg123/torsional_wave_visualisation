@@ -15,7 +15,7 @@
 % User Defined Variables
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-Vfile = 'example_vel.txt';      % File containing velocity data. Data is assumed to have units radians per unit time.
+Vfile = 'cox_etal_2014.txt';      % File containing velocity data. Data is assumed to have units radians per unit time.
 vel=dlmread(Vfile);             %Load the data
  
 t_start = 0;                    %Set the time array, enter the start and end values for the simulation time.
@@ -25,17 +25,17 @@ time = linspace(t_start,t_end,size(vel,2));
 
 
     
-plot_type = 2;                  %Type of plot to generate. 1 = scatter plot, 2 = 2D cylinders, 3 = 3Dcylinders
+plot_type = 3;                  %Type of plot to generate. 1 = scatter plot, 2 = 2D cylinders, 3 = 3Dcylinders
     
-n = 15;                         %Number of cylinders to approximate to (taken to be 100 for scatter plot)
+n = 25;                         %Number of cylinders to approximate to (taken to be 100 for scatter plot)
 
-user.nframes=100;               %Number of frames in the movie
+user.nframes=1000;              %Number of frames in the movie
 
 mov_fps = 24;                   %Movie framerate (must be smaller than number of frames). 
     
-user.n_tex = 300;               %number of texture points (recommended 300 for 2D/3D plots and 5000 for scatter plot)
+user.n_tex = 500;               %number of texture points (recommended ~300 for 2D/3D plots and 5000 for scatter plot)
     
-user.tex_size = 20;             %Texture point marker size
+user.tex_size = 18;             %Texture point marker size
 
 
 
@@ -46,7 +46,7 @@ mov_fmt = '.mp4';               %Output movie file format, can set to any format
                                 %need to tell Matlab the location of ffmpeg if it doesn't recognise it
                                 %(using the ffmpeg_loc variable)
     
-intro_anim=0;                   %intro animation for 3D animation. (on=1, off=0)
+intro_anim=1;                   %intro animation for 3D animation. (on=1, off=0)
     
 user.x_axis=sprintf('Radius');  %Text for x axis label
     
@@ -56,7 +56,7 @@ user.fs = 10;                   %font size for x/y axis
     
 user.tfs = 15;                  %font size for title
     
-user.cbar_range = max(abs(vel(:)));  %Range of values for color scale to represent (will run from -cbar_range to cbar_range)
+user.cbar_range = 1;%max(abs(vel(:)));  %Range of values for color scale to represent (will run from -cbar_range to cbar_range)
     
 user.ct = ['Velocity'];         %Colorbar title
     
@@ -116,7 +116,7 @@ user.bar = waitbar(0,'');
 
 %Determine plot type, average velocities and run it.
 if plot_type > 1
-    V = avg_velocities(vel,n,user.nframes);
+    %V = avg_velocities(vel,n,user.nframes);
     
     if plot_type == 2
         user.tmpl = '2D';
