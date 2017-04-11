@@ -47,9 +47,13 @@ this command can be turned off by the user with the mov_out variable.
 
 #####Examples
 
-Included in this repository is an example data set (example_vel.txt and
-example_time.txt) and an example movie of each style of animation for this data (in the
-output_torsional folder). The data is a simple gaussian wave travelling outwards.
+Included in this repository is an example data set (simple gaussian pulse) and a dataset
+presented in figure 3 of Cox et al (2014). A movie of each style of animation for the
+data is provided in the output_torsional folder.
 
-If you have any questions or find any bugs feel free to contact me at
+If you have any questions or find any bugs, feel free to contact me at
 ee12sg@leeds.ac.uk
+
+#####Reference
+G. A. Cox, P. W. Livermore, J. E. Mound; Forward models of torsional waves: dispersion 
+and geometric effects. Geophys J Int 2014; 196 (3): 1311-1329. doi: 10.1093/gji/ggt414
