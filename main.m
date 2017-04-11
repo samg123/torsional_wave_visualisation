@@ -1,4 +1,4 @@
-% Torsional Wave Visualisation Program v1.1 by Sam Greenwood (12/3/17)
+% Torsional Wave Visualisation Program v1.2 by Sam Greenwood (11/4/17)
 %
 % This is the main program from which everything is controlled. The other
 % included functions shoulnd't need editting. Edit the User Defined
@@ -14,92 +14,77 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % User Defined Variables
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% File containing velocity data. Data is assumed to have units radians per unit time.
-    Vfile = 'example_vel.txt';
-    
-%Load the data
-    vel=dlmread(Vfile);
-    
- %Set the time array, enter the start and end values for the simulation
- %time. Time units are assumed to be the same used in the velocity.
-    t_start = 0;
-    t_end = 20;
-    time = linspace(t_start,t_end,size(vel,2));
-    
-%Type of plot to generate. 1 = scatter plot, 2 = 2D cylinders, 3 = 3Dcylinders
-    plot_type = 2;
-    
-%Number of cylinders to approximate to (taken to be 100 for scatter plot)
-    n = 15;
-    
-%Output movie file format, can set to any format available to ffmpeg.
-%Requires ffmpeg cl tools. Set mov_fmt = 0 to skip encoding movie. May
-%need to tell Matlab the location of ffmpeg if it doesn't recognise it
-%(ffmpeg_loc variable below).
-    mov_fmt = '.mp4';
-    %ffmpeg_loc = '/usr/bin/';
-    
-%Number of frames in the movie
-    user.nframes=100;
-    
-%Movie framerate (must be smaller than number of frames).
-    mov_fps = 24;
-    
-%intro animation for 3D animation. (on=1, off=0)
-    intro_anim=0;
-    
-%number of texture points (recommended 300 for 2D/3D plots and 5000 for scatter plot)
-    user.n_tex = 300;
-    
-%Texture point marker size
-    user.tex_size = 20;
-    
-%Text for x axis label
-    user.x_axis=sprintf('Radius');
-    
-%Text for y axis label
-    user.y_axis=sprintf('Radius');
-    
-%font size for x/y axis
-    user.fs = 10;
-    
-%font size for title
-    user.tfs = 15;
-    
-%Range of values for color scale to represent (will run from -cbar_range to cbar_range)
-    user.cbar_range = 1;  %max(abs(vel(:)));
-    
-%Colorbar title
-    user.ct = ['Velocity'];
-    
-%Unit of time values in 'time' array. This will be printed in the title e.g 1.45 Years
-    user.titletext = [' Years'];
-        
-%Positions of Tick marks for x/y axis (must be >-1 and <1 inclusively)
-    user.ticks = [-1,-0.3509,0,0.3509,1];
-    
-%Labels for these tick marks
-    user.lables = {'CMB','TC','0','TC','CMB'};
-    
-%az and el are the starting azimuth/elevation for the 3D view.
-    user.az = -110;
-    user.el = 20;
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Vfile = 'example_vel.txt';      % File containing velocity data. Data is assumed to have units radians per unit time.
+vel=dlmread(Vfile);             %Load the data
+ 
+t_start = 0;                    %Set the time array, enter the start and end values for the simulation time.
+t_end = 20;                     %Time units are assumed to be the same used in the velocity.
+time = linspace(t_start,t_end,size(vel,2));
+
+
+
+    
+plot_type = 2;                  %Type of plot to generate. 1 = scatter plot, 2 = 2D cylinders, 3 = 3Dcylinders
+    
+n = 15;                         %Number of cylinders to approximate to (taken to be 100 for scatter plot)
+
+user.nframes=100;               %Number of frames in the movie
+
+mov_fps = 24;                   %Movie framerate (must be smaller than number of frames). 
+    
+user.n_tex = 300;               %number of texture points (recommended 300 for 2D/3D plots and 5000 for scatter plot)
+    
+user.tex_size = 20;             %Texture point marker size
+
+
+
+
+
+mov_fmt = '.mp4';               %Output movie file format, can set to any format available to ffmpeg.
+%ffmpeg_loc = '/usr/bin/';      %Requires ffmpeg cl tools. Set mov_fmt = 0 to skip encoding movie. May
+                                %need to tell Matlab the location of ffmpeg if it doesn't recognise it
+                                %(using the ffmpeg_loc variable)
+    
+intro_anim=0;                   %intro animation for 3D animation. (on=1, off=0)
+    
+user.x_axis=sprintf('Radius');  %Text for x axis label
+    
+user.y_axis=sprintf('Radius');  %Text for y axis label
+    
+user.fs = 10;                   %font size for x/y axis
+    
+user.tfs = 15;                  %font size for title
+    
+user.cbar_range = max(abs(vel(:)));  %Range of values for color scale to represent (will run from -cbar_range to cbar_range)
+    
+user.ct = ['Velocity'];         %Colorbar title
+    
+user.titletext = [' Years'];    %Unit of time values in 'time' array. This will be printed in the title e.g 1.45 Years
+        
+user.ticks = [-1,-0.3509,0,0.3509,1]; %Positions of Tick marks for x/y axis (must be >-1 and <1 inclusively)
+    
+user.lables = {'CMB','TC','0','TC','CMB'}; %Labels for these tick marks
+    
+user.az = -110;                 %az and el are the azimuth/elevation for the 3D view.
+user.el = 20;
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Define a colourscheme (the one defined below runs blue through white to red).
 % Comment out and set 'cs' to equal a different colourscheme if desired (e.g cs = jet)
 
-% cs = zeros(61,3);
+% user.cs = zeros(61,3);
 % for i = 1:31
 %     C = (i-1)/30;
-%     cs(i,:) = [C,C,1];
+%     user.cs(i,:) = [C,C,1];
 % end
 % 
 % for i = 1:30
 %     C = 1-(i/30);
-%     cs(31+i,:) = [1,C,C];
+%     user.cs(31+i,:) = [1,C,C];
 % end
 user.cs = jet;
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %Check with user directory output is ok to use
@@ -157,8 +142,10 @@ end
 % Movie Encoding
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % 
-% Call Matlab to run the ffmpeg unix command. The framerate can be changed
-% by placing a different number after '-framerate'. 
+% Call Matlab to run the ffmpeg unix command. Matlab may recognise the
+% ffmpeg command line tool. If not uncomment the ffmpeg_loc variable and set to
+% the path where ffmpeg is installed.
+
 if mov_fmt ~= 0
     if exist('ffmpeg_loc','var') == 1
         loc = ffmpeg_loc;
