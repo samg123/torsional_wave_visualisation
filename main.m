@@ -25,15 +25,15 @@ time = linspace(t_start,t_end,size(vel,2));
 
 
     
-plot_type = 3;                  %Type of plot to generate. 1 = scatter plot, 2 = 2D cylinders, 3 = 3Dcylinders
+plot_type = 2;                  %Type of plot to generate. 1 = scatter plot, 2 = 2D cylinders, 3 = 3Dcylinders
     
-n = 25;                         %Number of cylinders to approximate to (taken to be 100 for scatter plot)
+n = 15;                         %Number of cylinders to approximate to (taken to be 100 for scatter plot)
 
-user.nframes=1000;              %Number of frames in the movie
+user.nframes=100;               %Number of frames in the movie
 
 mov_fps = 24;                   %Movie framerate (must be smaller than number of frames). 
     
-user.n_tex = 500;               %number of texture points (recommended ~300 for 2D/3D plots and 5000 for scatter plot)
+user.n_tex = 300;               %number of texture points (recommended ~300 for 2D/3D plots and 5000 for scatter plot)
     
 user.tex_size = 18;             %Texture point marker size
 
@@ -116,7 +116,7 @@ user.bar = waitbar(0,'');
 
 %Determine plot type, average velocities and run it.
 if plot_type > 1
-    %V = avg_velocities(vel,n,user.nframes);
+    V = avg_velocities(vel,n,user.nframes);
     
     if plot_type == 2
         user.tmpl = '2D';
