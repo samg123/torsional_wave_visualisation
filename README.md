@@ -39,11 +39,14 @@ velocity (e.g. velocity and time data should be rad/year and years).
 #####Movie Encoding
 
 The indivual frames of the animation are saved to './output_torsional' where
-'./' denotes the directory in which matlab is running from. How the frames are
-encoded into a movie is left to the user. The recommended method is with ffmpeg.
-If the ffmpeg command line tools are installed then the encoding command is
-included within main.m and will run automatically. If they are not installed then
-this command can be turned off by the user with the mov_out variable.
+'./' denotes the directory in which matlab is running from. If the ffmpeg command line 
+tools are installed then the command to encode the frames into a movie is included within
+main.m and will run automatically (ffmpeg can be installed from https://ffmpeg.org/).
+If they are not installed then this command can be turned off by the user
+with the 'mov_out' variable and encoding them is left to the user.
+Depending on how Matlab is set up it may not recognise the
+ffmpeg command. In this case uncomment the 'ffmpeg_loc' variable in main.m and set it to
+the path to where ffmpeg is installed. 
 
 #####Examples
 
