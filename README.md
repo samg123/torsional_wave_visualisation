@@ -4,7 +4,8 @@ This program offers 3 ways to visualise torsional wave propogation in the
 earths core as animations. The main program (main.m) relies upon the 5
 included external functions: displacements.m, make_cylinder.m, scatterplot.m,
 cylinders_2D.m and cylinders_3D.m. These should not need editting as all
-options can be specified within main.m.
+options are specified in the input file. One exception may be that ffmpeg may
+require the path to it's executable file (explained below).
 
 Three types of animation can be created:
 
@@ -23,38 +24,47 @@ For all the animations a colour scheme is used to show velocity, the time in
 each frame is displayed in the title and a circle is plotted to show the radius
 of the tangent cylinder (inner core radius).
 
+To run the program first edit the input file to your requirements. The format of the input
+file must be preserved, the order of the variables being read and what line they are on
+in is hard coded and as such will error if this changes.
+Then run: main('input.txt') in the matlab command window (where input.txt is the
+name of the input file you wish to use). The code will run and a progress bar will show how far through it is.
+It first resizes the data by interpolation to your specified number of cylinders and frames,
+then creates the plots (which are kept hidden for speed) and saves them as .png files to ./output_torsional.
+If the movie format variable in the input file in NOT 0 then it will attempt to call ffmpeg by UNIX command to encode the frames into a movie (see below). 
+
+One aspect to note is that the advection of the texture is vastly exaggerated to demonstrate the sense of motion.
+The code was created such that peak velocities on the order of 1 (dimensions don't matter) provide ample motion of
+the texture. If you're own velocities are too small or too large then change the velocity scale factor in the input file.
+This will multiply the velocities by this factor when advecting the texture but will not affect the colour scale of the plots.
+
 #####Required Data Format:
 
-There must be two data files, both delimited text files. The first contains
-the velocity data for each radial point at each point in time. As such the data
-is a table lxm (rowsxcolumns) in size, where l is the number of radial points and m is the
-number of temporal points. All velocities are assumed to be angular velocity and
-the radial domain is assumed to be uniformly spaced from the center of the Earth
-to the radius of the outer core.
+The data file must contain velocities with units [distance]/[time] (commonly km/yr).
+It must be an ascii file with no headers or footers and lxm (rowsxcolumns) in size.
+l is the number of radial points and m is the number of temporal points. Both time
+space data are assumed to have uniform spacing and the spatial domain starts at radius = 0
+with the last row containing data for the outermost radius.
 
-The second data file contains m data values and are the times of each time step.
-They are assumed to be uniformly spaced and have the same units as used for the
-velocity (e.g. velocity and time data should be rad/year and years).
-
-#####Movie Encoding
+#####Movie Encoding (requires UNIX)
 
 The indivual frames of the animation are saved to './output_torsional' where
 './' denotes the directory in which matlab is running from. If the ffmpeg command line 
 tools are installed then the command to encode the frames into a movie is included within
 main.m and will run automatically (ffmpeg can be installed from https://ffmpeg.org/).
-If they are not installed then this command can be turned off by the user
-with the 'mov_out' variable and encoding them is left to the user.
+If they are not installed then this command can be turned off in the input file
+and encoding is left to the user.
 Depending on how Matlab is set up it may not recognise the
-ffmpeg command. In this case uncomment the 'ffmpeg_loc' variable in main.m and set it to
-the path to where ffmpeg is installed. 
+ffmpeg command. In this case the 'loc' variable in main.m, in the movie_enc function
+needs to be set to the location where ffmpeg is installed.
 
 #####Examples
 
 Included in this repository is an example data set (simple gaussian pulse) and a dataset
 presented in figure 3 of Cox et al (2014). A movie of each style of animation for the
-data is provided in the output_torsional folder.
+data is provided in the output_torsional folder as are the input file used to create them
 
-If you have any questions or find any bugs, feel free to contact me at
+If you have any questions, find any bugs or have any requests for features feel free to contact me at
 ee12sg@leeds.ac.uk
 
 #####Reference
