@@ -62,10 +62,17 @@ needs to be set to the location where ffmpeg is installed.
 
 Included in this repository is an example data set (simple gaussian pulse) and a dataset
 presented in figure 3 of Cox et al (2014). A movie of each style of animation for the
-data is provided in the output_torsional folder as are the input file used to create them
+data is provided in the output_torsional folder as is an example input file used to create them.
+
+#####Contact
 
 If you have any questions, find any bugs or have any requests for features feel free to contact me at
 ee12sg@leeds.ac.uk
+
+#####Python
+
+A python version of this code is currently in the works but with no definite ETA. If you would like to
+be notified when this has been completed, drop me an email.
 
 #####Reference
 
