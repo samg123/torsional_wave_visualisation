@@ -1,4 +1,4 @@
-####Matlab Torsional Wave Visualisation Program (1.3) by Sam Greenwood (14/05/17)
+Matlab Torsional Wave Visualisation Program (1.3) by Sam Greenwood (14/05/17)
 
 This program offers 3 ways to visualise torsional wave propogation in the 
 earths core as animations. The main program (main.m) relies upon the 5
@@ -38,15 +38,16 @@ The code was created such that peak velocities on the order of 1 (dimensions don
 the texture. If you're own velocities are too small or too large then change the velocity scale factor in the input file.
 This will multiply the velocities by this factor when advecting the texture but will not affect the colour scale of the plots.
 
-#####Required Data Format:
+Required Data Format:
 
-The data file must contain velocities with units [distance]/[time] (commonly km/yr).
+The data file must contain velocity values in space and time. These values will be used to advect
+the texture in the theta direction (positive = anti-clockwise).
 It must be an ascii file with no headers or footers and lxm (rowsxcolumns) in size.
 l is the number of radial points and m is the number of temporal points. Both time
 space data are assumed to have uniform spacing and the spatial domain starts at radius = 0
 with the last row containing data for the outermost radius.
 
-#####Movie Encoding (requires UNIX)
+Movie Encoding (requires UNIX):
 
 The indivual frames of the animation are saved to './output_torsional' where
 './' denotes the directory in which matlab is running from. If the ffmpeg command line 
@@ -58,23 +59,23 @@ Depending on how Matlab is set up it may not recognise the
 ffmpeg command. In this case the 'loc' variable in main.m, in the movie_enc function
 needs to be set to the location where ffmpeg is installed.
 
-#####Examples
+Examples:
 
 Included in this repository is an example data set (simple gaussian pulse) and a dataset
 presented in figure 3 of Cox et al (2014). A movie of each style of animation for the
 data is provided in the output_torsional folder as is an example input file used to create them.
 
-#####Contact
+Contact:
 
 If you have any questions, find any bugs or have any requests for features feel free to contact me at
 ee12sg@leeds.ac.uk
 
-#####Python
+Python:
 
 A python version of this code is currently in the works but with no definite ETA. If you would like to
 be notified when this has been completed, drop me an email.
 
-#####Reference
+Reference:
 
 G. A. Cox, P. W. Livermore, J. E. Mound; Forward models of torsional waves: dispersion 
 and geometric effects. Geophys J Int 2014; 196 (3): 1311-1329. doi: 10.1093/gji/ggt414
