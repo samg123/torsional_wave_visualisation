@@ -1,4 +1,4 @@
-function cylinders_2D(n,time,V,user)
+function cylinders_2D(user,V)
 
 % Approximates the core to a set number of cylinders and produces a 2D
 % animation of an equatorial slice. The cylinders are plotted and change
@@ -20,12 +20,14 @@ function cylinders_2D(n,time,V,user)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Load user defined variables
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+n = user.n;
+time = user.times;
 n_tex = user.n_tex;
 tex_size = user.tex_size;
-x_axis = user.x_axis;
-y_axis = user.y_axis;
-fs = user.fs;
-tfs = user.tfs;
+x_axis = user.ax_lables(1);
+y_axis = user.ax_lables(2);
+tfs = user.fs(1);
+fs = user.fs(2);
 cbar_range = user.cbar_range;
 ct = user.ct;
 titletext = user.titletext;
@@ -33,7 +35,7 @@ ticks = user.ticks;
 lables = user.lables;
 tmpl = user.tmpl;
 nframes = user.nframes;
-colourscheme = user.cs;
+colourscheme = colormap(user.cs);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 tmpl = ['./output_torsional/',tmpl,'_%04d'];
@@ -71,6 +73,7 @@ for i = 1:length(x)
 end
 
 %Set up figure
+close all
 h=figure('Visible','off','Position', [100, 100, 1000, 900]);
 
 %Plot the ICB and CMB circles
@@ -115,8 +118,8 @@ for i = 1:n
 end
 
 
-tt = linspace(time(1),max(time),nframes);
-step = (max(time)-time(1))/nframes;
+tt = linspace(time(1),time(2),nframes);
+step = (time(2)-time(1))/nframes;
 
 bar = waitbar(0,'');
 % Start the loop
@@ -136,7 +139,7 @@ for t = 1:nframes
         for j = 1:n
             rad = j/n - 0.5/n;
             if data(i,2) == rad       
-                data(i,1) = data(i,1) + V(j,t)*step;
+                data(i,1) = data(i,1) + V(j,t)*step*user.factor;
             end
         end
     end
@@ -161,6 +164,6 @@ for t = 1:nframes
     delete(sc)
 end  
 close(h)
-close(bar)
+delete(bar)
 end
 

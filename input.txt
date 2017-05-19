@@ -1,0 +1,60 @@
+#Input file for torsional wave visualisation code. Edit these parameters as needed but keep the format the same.
+#Plot type: Scatterplot(1), 2D cylinders(2), 3D cylinders(3)
+1
+
+#Number of cylinders to approximate to (scatterplot will always default to 100)
+15
+
+#Number of frames in the movie
+10
+
+#Number of texture points (recommended ~300 for 2D/3D and 5000 scatter)
+600
+
+#Texture point size (usually 10-20)
+12
+
+#Intro animation toggle (0=off, 1=on)
+1
+
+#File containing velocity data
+example_vel.txt
+
+#Start and end times for the data
+0,20
+
+#Amplitude of colourbar data range (will be used for min/max), set to 0 to default to the max velocity value
+0.8 
+
+#Velcity scale factor (scales the texture advection)
+2
+
+#Movie format (set to 0 to skip movie encoding). This can be the extension of any format ffmpeg supports
+h261
+
+#Movie framerate (must be smaller than number of frames)
+2
+
+#Time unit the data has.
+Years
+
+#Colourbar title
+Velocity km/yr
+
+#Colourscheme (must be built into Matlab)
+jet
+
+#X/Y axis labels
+Radius,Radius
+
+#Axis tick mark positions (-1 <= 0 <= 1)
+-1,-0.3509,0,0.3509,1
+
+#Axis tick mark labels (must be same number as specified tick mark positions)
+CMB,TC,0,TC,CMB
+
+#Font size for title/axis labels
+15,10
+
+#Azimuth/elevation for 3D view
+-110,20

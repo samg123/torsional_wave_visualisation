@@ -1,4 +1,4 @@
-function cylinders_3D(n,time,V,user,intro_anim)
+function cylinders_3D(user,V)
 % INPUT
 % n = number of cylinders
 % time = array time data
@@ -16,12 +16,15 @@ function cylinders_3D(n,time,V,user,intro_anim)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Load user defined variables
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+n = user.n;
+time = user.times;
 n_tex = user.n_tex;
+intro_anim = user.intro_anim;
 tex_size = user.tex_size;
-x_axis = user.x_axis;
-y_axis = user.y_axis;
-fs = user.fs;
-tfs = user.tfs;
+x_axis = user.ax_lables(1);
+y_axis = user.ax_lables(2);
+tfs = user.fs(1);
+fs = user.fs(2);
 cbar_range = user.cbar_range;
 ct = user.ct;
 titletext = user.titletext;
@@ -29,9 +32,9 @@ ticks = user.ticks;
 lables = user.lables;
 tmpl = user.tmpl;
 nframes = user.nframes;
-az = user.az;
-el = user.el;
-colourscheme = user.cs;
+az = user.view(1);
+el = user.view(2);
+colourscheme = colormap(user.cs);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 name_counter = 1;
@@ -83,6 +86,7 @@ for i = 1:size(fraction,1)
 end
 
 %Set up figure
+close all
 h=figure('Visible','off','Position', [100, 100, 1000, 900]);
 colormap(colourscheme)
 cb=colorbar;
@@ -127,8 +131,8 @@ end
 
 
 
-tt = linspace(time(1),max(time),nframes);
-step = (max(time)-time(1))/nframes;
+tt = linspace(time(1),time(2),nframes);
+step = (time(2)-time(1))/nframes;
 
 bar = waitbar(0,'');
 %Start looping through time.
@@ -150,7 +154,7 @@ for t = 1:nframes
             %Avect the texture
             rad = j/n - 0.5/n;
             if data(i,2) == rad
-               data(i,1) = data(i,1) + V(j,t)*step;
+               data(i,1) = data(i,1) + V(j,t)*step*user.factor;
                flag = 1;
             end
             if flag == 1
@@ -218,8 +222,7 @@ for t = 1:nframes
                 el_t=el_t + 20/100;
                 az_t = az_t + (20/100);
             end
-         end
-             delete(p2)
+        end
         else
     end
 
@@ -246,7 +249,7 @@ for t = 1:nframes
      name_counter = name_counter + 1;
 end
 close(bar)
-close(h)
+delete(h)
 end
 
 

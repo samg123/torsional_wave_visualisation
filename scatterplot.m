@@ -1,4 +1,4 @@
-function scatterplot(np,time,V,user)
+function scatterplot(user,V)
 
 % Creates a random texture on a 2D equatorial slice in the form of data
 % points and advects them as decribed by the matrix 'vel'. 
@@ -11,12 +11,14 @@ function scatterplot(np,time,V,user)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Load user defined variables
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+np = user.n;
+time = user.times;
 n_tex = user.n_tex;
 tex_size = user.tex_size;
-x_axis = user.x_axis;
-y_axis = user.y_axis;
-fs = user.fs;
-tfs = user.tfs;
+x_axis = user.ax_lables(1);
+y_axis = user.ax_lables(2);
+tfs = user.fs(1);
+fs = user.fs(2);
 cbar_range = user.cbar_range;
 ct = user.ct;
 titletext = user.titletext;
@@ -24,7 +26,7 @@ ticks = user.ticks;
 lables = user.lables;
 tmpl = user.tmpl;
 nframes = user.nframes;
-colourscheme = user.cs;
+colourscheme = colormap(user.cs);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %Set the file naming template.
@@ -71,7 +73,7 @@ for i = 1:np
 end
 
 %For each velocity point define the index of the colour in the matrix
-%colourscheme
+%'colourscheme'
 half = floor(size(colourscheme,1)/2);
 fraction = round(half.*V./cbar_range);
 for i = 1:size(fraction,1)
@@ -87,6 +89,7 @@ end
 half = ceil(size(colourscheme,1)/2);
 
 %Set up figure
+close all
 h=figure('Visible','off','Position', [100, 100, 1000, 900]); 
 
 plot(cmbx,cmby,'k-')
@@ -103,8 +106,8 @@ c=colorbar;
 caxis([-cbar_range,cbar_range])
 title(c,ct)
 
-tt = linspace(time(1),max(time),nframes);
-step = (max(time)-time(1))/nframes;
+tt = linspace(time(1),time(2),nframes);
+step = (time(2)-time(1))/nframes;
 
 bar = waitbar(0,'');
 % Start the loop
@@ -119,7 +122,7 @@ for t = 1:nframes
            %Advect the texture and assign it a colour.
            data(i,3) = V(j,t)/step;
            data(i,4) = half+fraction(j,t); 
-           data(i,1) = data(i,1) + V(j,t)*step;
+           data(i,1) = data(i,1) + V(j,t)*step*user.factor;
            flag=1;
         end
 
@@ -190,7 +193,7 @@ for t = 1:nframes
     name_counter = name_counter + 1;
 end
 close(h)
-close(bar)
+delete(bar)
 end
 
 
