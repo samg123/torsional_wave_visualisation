@@ -30,7 +30,7 @@ example_vel.txt
 2
 
 #Movie format (set to 0 to skip movie encoding). This can be the extension of any format ffmpeg supports
-h261
+.mp4
 
 #Movie framerate (must be smaller than number of frames)
 2
